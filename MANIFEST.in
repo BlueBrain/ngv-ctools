@@ -1,0 +1,2 @@
+recursive-include archngv_building *.*
+global-exclude *.pyc *~ *.bak *.swp *.pyo
