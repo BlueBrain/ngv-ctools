@@ -1,2 +1,2 @@
-recursive-include archngv_building *.*
+recursive-include archngv_building *.pyx *.pxd
 global-exclude *.pyc *~ *.bak *.swp *.pyo
