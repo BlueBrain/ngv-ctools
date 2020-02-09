@@ -6,13 +6,13 @@ from libc.stdlib cimport free, realloc
 
 
 cdef struct PriorityHeapRecord:
-    SIZE_t node_id
-    float value
+    index_t node_id
+    float_t value
 
 ctypedef fused realloc_ptr:
     # Add pointer types here as needed.
     (PriorityHeapRecord*)
-    (SIZE_t*)
+    (index_t*)
 
 # safe_realloc(&p, n) resizes the allocation of p to n * sizeof(*p) bytes or
 # raises a MemoryError. It never calls free, since that's __dealloc__'s job.
@@ -46,9 +46,9 @@ cdef class MinPriorityHeap:
     is larger then the impurity value of the children.
     Attributes
     ----------
-    capacity : SIZE_t
+    capacity : index_t
         The capacity of the heap
-    heap_ptr : SIZE_t
+    heap_ptr : index_t
         The water mark of the heap; the heap grows from left to right in the
         array ``heap_``. The following invariant holds ``heap_ptr < capacity``.
     heap_ : PriorityHeapRecord*
@@ -56,7 +56,7 @@ cdef class MinPriorityHeap:
         the heap grows from left to right
     """
 
-    def __cinit__(self, SIZE_t capacity):
+    def __cinit__(self, index_t capacity):
         self.capacity = capacity
         self.heap_ptr = 0
 
@@ -70,15 +70,15 @@ cdef class MinPriorityHeap:
     cdef bint is_empty(self) nogil:
         return self.heap_ptr <= 0
 
-    cdef int push(self, SIZE_t node_id, float value) nogil except -1:
+    cdef index_t push(self, index_t node_id, float_t value) nogil except -1:
         """Push record on the priority heap.
         Return -1 in case of failure to allocate memory (and raise MemoryError)
         or 0 otherwise.
         """
 
-        cdef SIZE_t heap_ptr = self.heap_ptr
+        cdef index_t heap_ptr = self.heap_ptr
         cdef PriorityHeapRecord* heap = NULL
-        cdef SIZE_t* idmap = NULL
+        cdef index_t* idmap = NULL
 
         # Resize if capacity not sufficient
         if heap_ptr >= self.capacity:
@@ -103,12 +103,12 @@ cdef class MinPriorityHeap:
         self.heap_ptr = heap_ptr + 1
         return 0
 
-    cdef int pop(self, SIZE_t* node_id, float* value) nogil:
+    cdef index_t pop(self, index_t* node_id, float_t* value) nogil:
         """Remove min element from the heap. """
 
-        cdef SIZE_t heap_ptr = self.heap_ptr
+        cdef index_t heap_ptr = self.heap_ptr
         cdef PriorityHeapRecord* heap = self.heap_
-        cdef SIZE_t* idmap = self.idmap_
+        cdef index_t* idmap = self.idmap_
 
         if heap_ptr <= 0:
             return -1
@@ -132,13 +132,13 @@ cdef class MinPriorityHeap:
 
         return 0
 
-    cdef void heapify_up(self, PriorityHeapRecord* heap, SIZE_t* idmap, SIZE_t pos) nogil:
+    cdef void heapify_up(self, PriorityHeapRecord* heap, index_t* idmap, index_t pos) nogil:
         """Restore heap invariant parent.value > child.value from
            ``pos`` upwards. """
         if pos == 0:
             return
 
-        cdef SIZE_t parent_pos = (pos - 1) / 2
+        cdef index_t parent_pos = (pos - 1) / 2
 
         if heap[parent_pos].value > heap[pos].value:
 
@@ -149,12 +149,12 @@ cdef class MinPriorityHeap:
             heap[parent_pos], heap[pos] = heap[pos], heap[parent_pos]
             self.heapify_up(heap, idmap, parent_pos)
 
-    cdef void heapify_down(self, PriorityHeapRecord* heap, SIZE_t* idmap, SIZE_t pos, SIZE_t heap_length) nogil:
+    cdef void heapify_down(self, PriorityHeapRecord* heap, index_t* idmap, index_t pos, index_t heap_length) nogil:
         """Restore heap invariant parent.value > children.value from
            ``pos`` downwards. """
-        cdef SIZE_t left_pos = 2 * (pos + 1) - 1
-        cdef SIZE_t right_pos = 2 * (pos + 1)
-        cdef SIZE_t largest = pos
+        cdef index_t left_pos = 2 * (pos + 1) - 1
+        cdef index_t right_pos = 2 * (pos + 1)
+        cdef index_t largest = pos
 
         if (left_pos < heap_length and heap[left_pos].value < heap[largest].value):
             largest = left_pos
@@ -171,12 +171,12 @@ cdef class MinPriorityHeap:
 
             self.heapify_down(heap, idmap, largest, heap_length)
 
-    cpdef int py_push(self, SIZE_t node_id, float value):
+    cpdef index_t py_push(self, index_t node_id, float_t value):
         return self.push(node_id, value)
 
     cpdef tuple py_pop(self):
         cdef:
-            SIZE_t vertex_index
-            float travel_time
+            index_t vertex_index
+            float_t travel_time
         self.pop(&vertex_index, &travel_time)
         return travel_time, vertex_index

@@ -3,9 +3,10 @@
 # cython: boundscheck=False
 
 import logging
+import numpy as np
 cimport numpy as np
 
-from .priority_heap cimport MinPriorityHeap, SIZE_t
+from .priority_heap cimport MinPriorityHeap, index_t, float_t
 
 from libc.math cimport isinf
 from .local_solvers cimport local_solver_2D
@@ -18,33 +19,34 @@ cpdef enum:
     FMM_TRIAL = 0
     FMM_KNOWN = 1
 
-cpdef int UNKNOWN_GROUP = -1
+cpdef index_t UNKNOWN_GROUP = -1
 
 
-cdef inline float _dist_squared(float[:, :] xyz,
-                                SIZE_t ind1,
-                                SIZE_t ind2) nogil:
+cdef inline float_t _dist_squared(float_t[:, :] xyz,
+                                index_t ind1,
+                                index_t ind2) nogil:
     return ((xyz[ind1, 0] - xyz[ind2, 0]) ** 2 +
             (xyz[ind1, 1] - xyz[ind2, 1]) ** 2 +
             (xyz[ind1, 2] - xyz[ind2, 2]) ** 2)
 
 
-cpdef float _find_travel_time(SIZE_t[:] nn_offsets,
-                              float[:] v_travel_time,
-                              SIZE_t[:] neighbors,
-                              float[:, :] v_xyz,
-                              SIZE_t ind) nogil:
+cpdef float_t _find_travel_time(index_t[:] nn_offsets,
+                              float_t[:] v_travel_time,
+                              index_t[:] neighbors,
+                              float_t[:, :] v_xyz,
+                              index_t ind) nogil:
     """ Update the vertex value by solving the eikonal
     equation using the first order discretization of the gradient
     """
     cdef:
-        float TA, TB, TC, min_value = v_travel_time[ind]
-        SIZE_t n, nb1, nb2
-        SIZE_t nn_start = nn_offsets[ind]
-        SIZE_t n_neighbors = nn_offsets[ind + 1] - nn_start
+        float_t TA, TB, TC, min_value = v_travel_time[ind]
+        index_t n, nb1, nb2
+        index_t nn_start = nn_offsets[ind]
+        index_t n_neighbors = nn_offsets[ind + 1] - nn_start
 
     # find a triangle with nodes of known values and update the traveling time at vertex C
     for n in range(n_neighbors):
+
         if n == n_neighbors - 1:
             nb1 = neighbors[nn_start + n]
             # last edge cycled to the start
@@ -76,21 +78,21 @@ cpdef float _find_travel_time(SIZE_t[:] nn_offsets,
     return min_value
 
 
-cdef void _update_neighbors(float squared_cutoff_distance,
-                            SIZE_t[:] nn_offsets,
-                            float[:] v_travel_time,
-                            SIZE_t[:] neighbors,
-                            float[:, :] v_xyz,
-                            SIZE_t[:] v_status, #XXX char?
-                            SIZE_t[:] group_labels,
-                            long[:] v_group_index,
-                            SIZE_t vertex_index,
+cdef void _update_neighbors(float_t squared_cutoff_distance,
+                            index_t[:] nn_offsets,
+                            float_t[:] v_travel_time,
+                            index_t[:] neighbors,
+                            float_t[:, :] v_xyz,
+                            index_t[:] v_status, #XXX char?
+                            index_t[:] group_labels,
+                            index_t[:] v_group_index,
+                            index_t vertex_index,
                             MinPriorityHeap trial_heap) nogil:
     """ Update the values of the one ring neighbors of a vertex """
     cdef:
-        SIZE_t n, nv, asdf
-        SIZE_t nn_start = nn_offsets[vertex_index]
-        SIZE_t n_neighbors = nn_offsets[vertex_index + 1] - nn_start
+        index_t n, nv, asdf
+        index_t nn_start = nn_offsets[vertex_index]
+        index_t n_neighbors = nn_offsets[vertex_index + 1] - nn_start
 
     for n in range(n_neighbors):
         nv = neighbors[nn_start + n]
@@ -116,60 +118,99 @@ cdef void _update_neighbors(float squared_cutoff_distance,
             trial_heap.push(nv, v_travel_time[nv])
 
 
-cpdef void solve(float squared_cutoff_distance,
-                 SIZE_t[:] nn_offsets,
-                 float[:] v_travel_time,
-                 SIZE_t[:] neighbors,
-                 float[:, :] v_xyz,
-                 SIZE_t[:] v_status, #XXX char?
-                 SIZE_t[:] group_labels,
-                 long[:] v_group_index
-                 ):
-    """ Solves the eikonal equations using the fast marching method """
+cpdef solve(index_t[:] neighbors,
+            index_t[:] nn_offsets,
+            float_t[:, :] v_xyz,
+            index_t[:] seed_vertices,
+            float_t squared_cutoff_distance):
+    """
+    Given a triangulation of N vertices, where the connectivity of the i-th vertex can be extracted
+    via the neighbors and nn_offsets, and with coordinates v_xyz, solve the eikonal equation setting
+    as starting points of the wave propagation the seed_vertices. If the wave propagation exceeds the
+    squared_cutoff_distance then the spreading of that wave stops letting the neighboring seeds expand if any.
 
+    Args:
+        neighbors:
+            Array of vertices stored so that the neighbors of the i-th vertex can be extracted
+            neighbors[nn_offsets[i]: nn_offsets[i + 1]]
+
+        nn_offsets:
+            The offsets for extracting the neighbors for the i-th vertex
+
+        v_xyz:
+            The coordinates of the vertices
+
+        seed_vertices:
+            The vertex ids that will play the role of starting points in the simulation
+
+        squared_cutoff_distance:
+            The distance that the neighbor updating will stop for each vertex
+
+    Returns:
+        v_group_indices:
+            The array of the indices to the seed_vertices or -1 the unassigned group
+
+        v_travel_times:
+            The travel times of the wavefronts for each vertex
+
+        v_status:
+            The fast marching method status, e.g. FMM_KNOWN, FMM_TRIAL, FMM_FAR for each
+            vertex
+    """
     cdef:
-        MinPriorityHeap trial_heap
-        float travel_time
-        SIZE_t vertex_index
-        SIZE_t n_vertices
+        float_t travel_time
+        index_t i, vertex_index
+        index_t n_seeds = len(seed_vertices)
+        index_t n_vertices = len(v_xyz)
+        index_t[:] v_status = np.full(n_vertices, fill_value=FMM_FAR, dtype=np.int64)
+        float_t[:] v_travel_times = np.full(n_vertices, fill_value=np.inf, dtype=np.float32)
+        index_t[:] v_group_indices = np.full(n_vertices, fill_value=UNKNOWN_GROUP, dtype=np.int64)
 
-    n_vertices = len(v_group_index)
+        MinPriorityHeap trial_heap = MinPriorityHeap(n_vertices)
 
-    trial_heap = MinPriorityHeap(n_vertices)
-    #L.info('Updating source neighbors...')
-    # fist iterate over the known nodes and calculate the
-    # travel time to the neighbors
-    for vertex_index in range(n_vertices):
-        if v_group_index[vertex_index] != UNKNOWN_GROUP:
-            _update_neighbors(squared_cutoff_distance,
-                              nn_offsets,
-                              v_travel_time,
-                              neighbors,
-                              v_xyz,
-                              v_status,
-                              group_labels,
-                              v_group_index,
-                              vertex_index,
-                              trial_heap)
+    # initialize the seed vertices as already visited with
+    # zero travel times and assign their respective groups
+    for i in range(n_seeds):
+        vertex_index = seed_vertices[i]
+        v_status[vertex_index] = FMM_KNOWN
+        v_travel_times[vertex_index] = 0.0
+        v_group_indices[vertex_index] = i
+
+    # update the 1-ring neighborhood of the seed vertices
+    # and calculate the travel time to their neighbors
+    for i in range(n_seeds):
+        _update_neighbors(squared_cutoff_distance,
+                          nn_offsets,
+                          v_travel_times,
+                          neighbors,
+                          v_xyz,
+                          v_status,
+                          seed_vertices,
+                          v_group_indices,
+                          seed_vertices[i],
+                          trial_heap)
 
     # expand in a breadth first manner from the smallest
     # distance node and update the travel times for the
     # propagation of the wavefront
     while not trial_heap.is_empty():
+
         # min travel time vertex
         trial_heap.pop(&vertex_index, &travel_time)
 
         if v_status[vertex_index] != FMM_KNOWN:
             v_status[vertex_index] = FMM_KNOWN
-            v_travel_time[vertex_index] = travel_time
+            v_travel_times[vertex_index] = travel_time
 
         _update_neighbors(squared_cutoff_distance,
                           nn_offsets,
-                          v_travel_time,
+                          v_travel_times,
                           neighbors,
                           v_xyz,
                           v_status,
-                          group_labels,
-                          v_group_index,
+                          seed_vertices,
+                          v_group_indices,
                           vertex_index,
                           trial_heap)
+
+    return np.asarray(v_group_indices), np.asarray(v_travel_times), np.asarray(v_status)

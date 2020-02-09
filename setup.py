@@ -1,7 +1,7 @@
 '''setup.py for archngv-building'''
 import imp
 from setuptools import setup, Extension, find_packages
-
+import numpy
 try:
     from Cython.Build import cythonize
     _USE_CYTHON = True
@@ -40,6 +40,7 @@ setup(
         'numpy>=1.13',
     ],
     install_requires=[
-        'numpy>=1.13',
+        'numpy>=1.13'
     ],
+    include_dirs=[numpy.get_include()]
 )
