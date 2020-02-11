@@ -14,11 +14,9 @@ from .local_solvers cimport local_solver_2D
 L = logging.getLogger(__name__)
 
 
-cpdef enum:
-    FMM_FAR = -1
-    FMM_TRIAL = 0
-    FMM_KNOWN = 1
-
+cpdef index_t FMM_FAR = -1
+cpdef index_t FMM_TRIAL = 0
+cpdef index_t FMM_KNOWN = 1
 cpdef index_t UNKNOWN_GROUP = -1
 
 
