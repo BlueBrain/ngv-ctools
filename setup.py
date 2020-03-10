@@ -13,7 +13,7 @@ VERSION = imp.load_source("archngv_building.version", "archngv_building/version.
 
 if _USE_CYTHON:
     extensions = cythonize([Extension("*",
-                                      ["archngv_building/endfeet_reconstruction/*.pyx", ],),
+                                      ["archngv_building/endfeet_reconstruction/*.pyx", ], include_dirs=[numpy.get_include()]),
                             ])
 else:
     from glob import glob
@@ -42,5 +42,4 @@ setup(
     install_requires=[
         'numpy>=1.13'
     ],
-    include_dirs=[numpy.get_include()]
 )
