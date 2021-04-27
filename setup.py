@@ -8,17 +8,17 @@ try:
 except ImportError:
     _USE_CYTHON = False
 
-VERSION = imp.load_source("archngv_building.version", "archngv_building/version.py").VERSION
+VERSION = imp.load_source("ngv_ctools.version", "ngv_ctools/version.py").VERSION
 
 
 if _USE_CYTHON:
     extensions = cythonize([Extension("*",
-                                      ["archngv_building/endfeet_reconstruction/*.pyx", ], include_dirs=[numpy.get_include()]),
+                                      ["ngv_ctools/endfeet_reconstruction/*.pyx", ], include_dirs=[numpy.get_include()]),
                             ])
 else:
     from glob import glob
-    sources = glob("archngv_building/endfeet_reconstruction/*.c")
-    assert sources, 'Must have .c files in archngv_building/endfeet_reconstruction/'
+    sources = glob("ngv_ctools/endfeet_reconstruction/*.c")
+    assert sources, 'Must have .c files in ngv_ctools/endfeet_reconstruction/'
     extensions = [Extension(source.strip('.c'), [source])
                   for source in sources]
 
@@ -28,9 +28,9 @@ setup(
     classifiers=[
         'Programming Language :: Python :: 3.6',
     ],
-    name='archngv_building',
+    name='ngv_ctools',
     version=VERSION,
-    description='NGV Architecture Cython Building Modules',
+    description='NGV Architectur_bui Cython Building Modules',
     author='Eleftherios Zisis',
     author_email='eleftherios.zisis@epfl.ch',
     packages=find_packages(),

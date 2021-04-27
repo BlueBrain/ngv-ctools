@@ -1,7 +1,7 @@
-archngv_building/endfeet_reconstruction/*.c
-archngv_building/endfeet_reconstruction/*.so
+ngv_ctools/endfeet_reconstruction/*.c
+ngv_ctools/endfeet_reconstruction/*.so
 __pycache__
-archngv_building.egg-info/
+ngv_ctools.egg-info/
 .tox
 dist
 *.pyc

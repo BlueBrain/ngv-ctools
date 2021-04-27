@@ -1,2 +1,2 @@
-recursive-include archngv_building *.pyx *.pxd
+recursive-include ngv_ctools *.pyx *.pxd
 global-exclude *.pyc *~ *.bak *.swp *.pyo

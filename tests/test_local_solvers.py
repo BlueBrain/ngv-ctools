@@ -1,6 +1,6 @@
 from numpy.testing import assert_allclose
 import numpy as np
-from archngv_building.endfeet_reconstruction import local_solvers
+from ngv_ctools.endfeet_reconstruction import local_solvers
 
 
 def test_second_order_solutions():

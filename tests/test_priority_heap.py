@@ -1,5 +1,5 @@
 import pytest
-from archngv_building.endfeet_reconstruction import priority_heap
+from ngv_ctools.endfeet_reconstruction import priority_heap
 
 
 def test_priority_heap():

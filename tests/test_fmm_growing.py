@@ -5,7 +5,7 @@ import numpy as np
 from numpy import testing as npt
 import openmesh
 
-from archngv_building.endfeet_reconstruction.fmm_growing import solve
+from ngv_ctools.endfeet_reconstruction.fmm_growing import solve
 
 
 DATA_DIRECTORY = Path(__file__).parent / Path('data')
