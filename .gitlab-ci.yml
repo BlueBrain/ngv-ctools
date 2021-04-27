@@ -1,0 +1,13 @@
+.tox-template:
+  tags: [bb5]
+
+include:
+- project: 'nse/ci'
+  ref: main
+  file:
+    - '/ci/lib/tox-bb5.yml'
+    - '/ci/jobs/coverage.yml'
+    - '/ci/jobs/lint.yml'
+    - '/ci/jobs/py36.yml'
+    - '/ci/jobs/check-version.yml'
+
