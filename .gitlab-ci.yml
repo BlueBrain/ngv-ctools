@@ -2,6 +2,7 @@
   tags: [bb5]
   variables:
     PIP_PACKAGES:
+      numpy
 
 
 include:
