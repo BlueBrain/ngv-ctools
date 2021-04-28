@@ -2,8 +2,9 @@
   tags: [bb5]
   variables:
     PIP_PACKAGES:
+      tox
       numpy
-
+      cython
 
 include:
 - project: 'nse/ci'
