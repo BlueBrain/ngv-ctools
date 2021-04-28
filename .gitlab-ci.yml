@@ -1,6 +1,6 @@
 .tox-template:
   tags: [bb5]
- variables:
+  variables:
     PIP_PACKAGES:
       tox
       numpy
