@@ -1,19 +1,5 @@
-.tox-template:
-  tags: [bb5]
-  variables:
-    PIP_PACKAGES:
-      tox
-      numpy
-      cython
-
 include:
-- project: 'nse/ci'
-  ref: main
-  file:
-    - '/ci/lib/tox-bb5.yml'
-    - '/ci/jobs/lint.yml'
-    - '/ci/jobs/py36.yml'
-    - '/ci/jobs/py37.yml'
-    - '/ci/jobs/py38.yml'
-    - '/ci/jobs/check-version.yml'
+  - project: molsys/ci
+    file: /ci/pipelines/molsys.ngv-ctools.yml
+
 
