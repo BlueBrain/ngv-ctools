@@ -4,18 +4,21 @@
 py36:
  variables:
     PIP_PACKAGES:
+      tox
       numpy
       cython
 
 lint:
  variables:
     PIP_PACKAGES:
+      tox
       numpy
       cython
 
 coverage:
  variables:
     PIP_PACKAGES:
+      tox
       numpy
       cython
 
