@@ -1,27 +1,10 @@
 .tox-template:
   tags: [bb5]
-
-py36:
  variables:
     PIP_PACKAGES:
       tox
       numpy
       cython
-
-lint:
- variables:
-    PIP_PACKAGES:
-      tox
-      numpy
-      cython
-
-coverage:
- variables:
-    PIP_PACKAGES:
-      tox
-      numpy
-      cython
-
 
 include:
 - project: 'nse/ci'
@@ -31,5 +14,7 @@ include:
     - '/ci/jobs/coverage.yml'
     - '/ci/jobs/lint.yml'
     - '/ci/jobs/py36.yml'
+    - '/ci/jobs/py37.yml'
+    - '/ci/jobs/py38.yml'
     - '/ci/jobs/check-version.yml'
 
