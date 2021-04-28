@@ -1,6 +1,22 @@
 .tox-template:
   tags: [bb5]
 
+py36:
+ variables:
+    EXTRA_MODULES:
+      archive/2019-12:py-numpy
+
+lint:
+ variables:
+    EXTRA_MODULES:
+      archive/2019-12:py-numpy
+
+coverage:
+ variables:
+    EXTRA_MODULES:
+      archive/2019-12:py-numpy
+
+
 include:
 - project: 'nse/ci'
   ref: main
