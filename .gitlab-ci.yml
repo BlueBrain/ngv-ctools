@@ -3,22 +3,21 @@ include:
   ref: main
   file:
     - /ci/lib/tox-docker.yml
-      #- /ci/jobs/lint.yml
-      #- /ci/jobs/py36.yml
-      #- /ci/jobs/py37.yml
-      #- /ci/jobs/py38.yml
-      #- /ci/jobs/check-version.yml
-      #- /ci/jobs/build-package.yml
+    - /ci/jobs/lint.yml
+    - /ci/jobs/py36.yml
+    - /ci/jobs/py37.yml
+    - /ci/jobs/py38.yml
+    - /ci/jobs/check-version.yml
+    - /ci/jobs/build-package.yml
     - /ci/jobs/build-wheels.yml
     #- /ci/jobs/publish-package.yml
     #- /ci/jobs/tag.yml
 
-.tox-template:
-  variables:
-    PIP_PACKAGES:
-      tox
-      numpy
-      cython
+#.tox-template:
+#  variables:
+#    PIP_PACKAGES:
+#      numpy
+#      cython
 
 # TODO: Remove this when testing is done
 build-wheels:
