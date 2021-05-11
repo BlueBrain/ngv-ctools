@@ -25,13 +25,14 @@ extensions = [
               define_macros=macros, extra_compile_args=compiler_args, include_dirs=[numpy.get_include()])
 ]
 
+
 setup(
     classifiers=[
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    name='ngv_ctools',
+    name='ngv-ctools',
     version=VERSION,
     description='NGV Architectur_bui Cython Building Modules',
     author='Eleftherios Zisis',
