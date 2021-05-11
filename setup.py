@@ -3,6 +3,7 @@ import importlib
 from setuptools import setup, Extension, find_packages
 import numpy
 
+
 spec = importlib.util.spec_from_file_location("ngv_ctools.version", "ngv_ctools/version.py")
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
