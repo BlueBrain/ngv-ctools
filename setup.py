@@ -14,7 +14,15 @@ macros = [("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")]
 
 
 extensions = [
-    Extension("*", ["ngv_ctools/endfeet_reconstruction/*.pyx"], define_macros=macros, extra_compile_args=compiler_args, include_dirs=[numpy.get_include()])
+    Extension("ngv_ctools.endfeet_reconstruction.fmm_growing",
+              ["ngv_ctools/endfeet_reconstruction/fmm_growing.pyx"],
+              define_macros=macros, extra_compile_args=compiler_args, include_dirs=[numpy.get_include()]),
+    Extension("ngv_ctools.endfeet_reconstruction.local_solvers",
+              ["ngv_ctools/endfeet_reconstruction/local_solvers.pyx"],
+              define_macros=macros, extra_compile_args=compiler_args, include_dirs=[numpy.get_include()]),
+    Extension("ngv_ctools.endfeet_reconstruction.priority_heap",
+              ["ngv_ctools/endfeet_reconstruction/priority_heap.pyx"],
+              define_macros=macros, extra_compile_args=compiler_args, include_dirs=[numpy.get_include()])
 ]
 
 setup(
@@ -28,6 +36,7 @@ setup(
     description='NGV Architectur_bui Cython Building Modules',
     author='Eleftherios Zisis',
     author_email='eleftherios.zisis@epfl.ch',
+    url='https://bbpgitlab.epfl.ch/molsys/ngv-ctools',
     packages=find_packages(),
     ext_modules=extensions,
     include_package_data=True,
