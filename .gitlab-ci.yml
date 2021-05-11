@@ -1,29 +1,3 @@
 include:
-- project: 'nse/ci'
-  ref: main
-  file:
-    - /ci/lib/tox-docker.yml
-    - /ci/jobs/lint.yml
-    - /ci/jobs/py36.yml
-    - /ci/jobs/py37.yml
-    - /ci/jobs/py38.yml
-    - /ci/jobs/check-version.yml
-    - /ci/jobs/build-package.yml
-    - /ci/jobs/build-wheels.yml
-    #- /ci/jobs/publish-package.yml
-    #- /ci/jobs/tag.yml
-
-.tox-template:
-  variables:
-    PIP_PACKAGES:
-      tox
-      numpy
-      cython
-
-# TODO: Remove this when testing is done
-build-wheels:
-  rules:
-  - if: $CI_MERGE_REQUEST_IID
-  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
-
+  - project: molsys/ci
+    file: /ci/pipelines/molsys.ngv-ctools.yml
