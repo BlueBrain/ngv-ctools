@@ -1,32 +1,26 @@
 '''setup.py for archngv-building'''
-import imp
 from setuptools import setup, Extension, find_packages
 import numpy
-try:
-    from Cython.Build import cythonize
-    _USE_CYTHON = True
-except ImportError:
-    _USE_CYTHON = False
 
-VERSION = imp.load_source("ngv_ctools.version", "ngv_ctools/version.py").VERSION
+spec = importlib.util.spec_from_file_location("ngv_ctools.version", "ngv_ctools/version.py")
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+VERSION = module.VERSION
 
 
-if _USE_CYTHON:
-    extensions = cythonize([Extension("*",
-                                      ["ngv_ctools/endfeet_reconstruction/*.pyx", ], include_dirs=[numpy.get_include()]),
-                            ])
-else:
-    from glob import glob
-    sources = glob("ngv_ctools/endfeet_reconstruction/*.c")
-    assert sources, 'Must have .c files in ngv_ctools/endfeet_reconstruction/'
-    extensions = [Extension(source.strip('.c'), [source])
-                  for source in sources]
+compiler_args = ["-DNDEBUG", "-O3"]
+macros = [("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")]
 
 
+extensions = [
+    Extension("*", ["ngv_ctools/endfeet_reconstruction/*.pyx"], define_macros=macros, extra_compile_args=compiler_args, include_dirs=[numpy.get_include()])
+]
 
 setup(
     classifiers=[
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     name='ngv_ctools',
     version=VERSION,
