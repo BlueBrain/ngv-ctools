@@ -13,11 +13,11 @@ include:
     #- /ci/jobs/publish-package.yml
     #- /ci/jobs/tag.yml
 
-#.tox-template:
-#  variables:
-#    PIP_PACKAGES:
-#      numpy
-#      cython
+.tox-template:
+  variables:
+    PIP_PACKAGES:
+      numpy
+      cython
 
 # TODO: Remove this when testing is done
 build-wheels:
