@@ -235,7 +235,6 @@ def test_solve__plane_10x10_two_seeds():
            0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
            0, 1, 1, 1, 1, 1, 1, 1, 1, 1])
 
-    assert False
     assert np.all(expected_ids == v_group_index), _print_plane(10, expected_ids, v_group_index)
     assert np.all(v_status == 1) # all are visited
 
