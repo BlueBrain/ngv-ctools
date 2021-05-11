@@ -16,6 +16,7 @@ include:
 .tox-template:
   variables:
     PIP_PACKAGES:
+      tox
       numpy
       cython
 
