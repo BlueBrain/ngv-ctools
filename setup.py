@@ -1,4 +1,5 @@
 '''setup.py for archngv-building'''
+import importlib
 from setuptools import setup, Extension, find_packages
 import numpy
 
