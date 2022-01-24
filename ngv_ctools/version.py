@@ -1,2 +1,2 @@
 """ ngv_ctools version """
-VERSION = "0.1.6.dev0"
+VERSION = "0.1.6"
