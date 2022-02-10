@@ -1,2 +1,2 @@
-recursive-include ngv_ctools *.pyx *.pxd
-global-exclude *.pyc *~ *.bak *.swp *.pyo
+graft src
+graft include

@@ -1,8 +1,3 @@
 [build-system]
-requires = [
-    "pip>=20",
-    "setuptools",
-    "wheel",
-    "Cython>=0.29.2",
-    "numpy>=1.13,<1.22",  # for binary compatibility with python3.8 ngv
-]
+requires = ["setuptools>=42", "wheel", "pybind11~=2.6.1"]
+build-backend = "setuptools.build_meta"
