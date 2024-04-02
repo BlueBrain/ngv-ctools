@@ -35,10 +35,11 @@ setup(
     name="ngv-ctools",
     python_requires=">=3.7",
     classifiers=[
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
     version=VERSION,
     description="NGV Architecture c++ modules",
