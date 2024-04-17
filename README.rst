@@ -21,7 +21,7 @@ This is the recommended way.
 
 .. code-block:: bash
 
-  $ pip install ngv-ctools
+  pip install ngv-ctools
 
 Tests
 =====
