@@ -8,7 +8,7 @@ build-verbosity = 1
 
 # Optional: run pytest to ensure that the package was correctly built
 test-command = "pytest {project}/tests"
-test-requires = "pytest"
+test-requires = "pytest numpy"
 
 # Only target 64 bit architectures
 #skip = ["pp38-*"]
