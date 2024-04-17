@@ -33,7 +33,11 @@ ext_modules = [
 
 setup(
     name="ngv-ctools",
-    python_requires=">=3.7",
+    python_requires=">=3.8",
+    setup_requires=["setuptools_scm"],
+    use_scm_version={
+        "local_scheme": "no-local-version",
+    },
     classifiers=[
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
