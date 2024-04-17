@@ -1,11 +1,7 @@
-# ngv-ctools
-
-ngv-ctools provide python bindings for ngv-related c++ algorithms
-
 Overview
 ========
 
-c++ algorithms exposed with pybind11_ python bindings.
+ngv-ctools provide c++ algorithms for ngv_ exposed via pybind11_ python bindings.
 
 Algorithms
 ==========
@@ -40,4 +36,5 @@ For license and authors, see LICENSE.txt and AUTHORS.txt respectively.
 
 Copyright (c) 2022-2024 Blue Brain Project/EPFL
 
+.. _ngv: https://github.com/BlueBrain/ArchNGV
 .. _pybind11: https://pybind11.readthedocs.io
