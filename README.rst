@@ -1,6 +1,6 @@
 # ngv-ctools
 
-ngv-ctools provide python bindings for ngv-related c++ implementations
+ngv-ctools provide python bindings for ngv-related c++ algorithms
 
 Overview
 ========
