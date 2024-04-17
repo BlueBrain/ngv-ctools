@@ -20,12 +20,14 @@ If one is on a Linux platform, one should be able to use the compiled Python whe
 This is the recommended way.
 
 .. code-block:: bash
+
   $ pip install ngv-ctools
 
 Tests
 =====
 
 .. code-block:: bash
+
   pip install tox
   tox
 
