@@ -10,6 +10,7 @@ build-verbosity = 1
 test-command = "pytest {project}/tests"
 test-requires = ["pytest", "numpy"]
 
+# skip pypy and musllinux wheels
+skip = ["pp*", "*musllinux*"]
 # Only target 64 bit architectures
-#skip = ["pp38-*"]
 archs = ["auto64"]
