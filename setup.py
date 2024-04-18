@@ -29,7 +29,9 @@ setup(
     use_scm_version={
         "local_scheme": "no-local-version",
     },
+    url="https://github.com/BlueBrain/ngv-ctools.git",
     classifiers=[
+        "Programming Language :: Python",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -37,9 +39,7 @@ setup(
         "Programming Language :: Python :: 3.12",
     ],
     description="NGV Architecture c++ modules",
-    author="Eleftherios Zisis",
-    author_email="eleftherios.zisis@epfl.ch",
-    url="https://bbpgitlab.epfl.ch/molsys/ngv-ctools",
+    author="Blue Brain Project, EPFL",
     packages=find_packages(),
     ext_modules=ext_modules,
     include_package_data=True,
