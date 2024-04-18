@@ -1,3 +1,16 @@
 [build-system]
 requires = ["setuptools>=42", "wheel", "pybind11~=2.12.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel]
+# Necessary to see build output from the actual compilation
+build-verbosity = 1
+
+# Optional: run pytest to ensure that the package was correctly built
+test-command = "pytest {project}/tests"
+test-requires = ["pytest", "numpy"]
+
+# skip pypy and musllinux wheels
+skip = ["pp*", "*musllinux*"]
+# Only target 64 bit architectures
+archs = ["auto64"]

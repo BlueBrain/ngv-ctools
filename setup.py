@@ -1,5 +1,4 @@
 """setup.py for archngv-building"""
-import importlib.util
 from setuptools import find_packages, setup
 
 
@@ -10,14 +9,6 @@ except ImportError:
     # can execute python setup.py --name and --version without
     # stumbling on the pybind11 import
     from setuptools import Extension as Pybind11Extension
-
-
-spec = importlib.util.spec_from_file_location(
-    "ngv_ctools.version", "ngv_ctools/version.py"
-)
-module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(module)
-VERSION = module.VERSION
 
 
 ext_modules = [
@@ -33,7 +24,11 @@ ext_modules = [
 
 setup(
     name="ngv-ctools",
-    python_requires=">=3.7",
+    python_requires=">=3.8",
+    setup_requires=["setuptools_scm"],
+    use_scm_version={
+        "local_scheme": "no-local-version",
+    },
     classifiers=[
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -41,7 +36,6 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
     ],
-    version=VERSION,
     description="NGV Architecture c++ modules",
     author="Eleftherios Zisis",
     author_email="eleftherios.zisis@epfl.ch",
