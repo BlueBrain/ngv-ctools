@@ -39,6 +39,8 @@ setup(
         "Programming Language :: Python :: 3.12",
     ],
     description="NGV Architecture c++ modules",
+    long_description=open("README.rst").read(),
+    long_description_content_type="text/x-rst",
     author="Blue Brain Project, EPFL",
     packages=find_packages(),
     ext_modules=ext_modules,
