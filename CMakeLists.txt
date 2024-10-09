@@ -5,7 +5,7 @@ project(
   # name of the project
   ngv_ctools
 
-  DESCRIPTION "Python Binding for multi-threaded voro++ library."
+  DESCRIPTION "NGV C++ extensions"
 
   # ensure there is a working c++ compiler
   LANGUAGES CXX
