@@ -48,10 +48,5 @@ pybind11_add_module(_ngv_ctools
     ${CMAKE_CURRENT_SOURCE_DIR}/src/bindings.cpp
 )
 
-target_include_directories(
-    _ngv_ctools
-    PRIVATE
-)
-
 # Install directive for scikit-build-core
 install(TARGETS _ngv_ctools LIBRARY DESTINATION ngv_ctools)
