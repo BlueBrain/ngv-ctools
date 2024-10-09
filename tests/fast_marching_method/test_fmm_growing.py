@@ -6,7 +6,7 @@ import pytest
 import numpy as np
 from numpy import testing as npt
 
-from _ngv_ctools.fast_marching_method import FastMarchingMethod
+from ngv_ctools._ngv_ctools.fast_marching_method import FastMarchingMethod
 from ngv_ctools.fast_marching_method import grow_waves_on_triangulated_surface as solve
 
 DATA_DIRECTORY = Path(__file__).parent / Path("data")

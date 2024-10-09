@@ -1,4 +1,4 @@
-from _ngv_ctools.fast_marching_method import MinPriorityHeap
+from ngv_ctools._ngv_ctools.fast_marching_method import MinPriorityHeap
 
 
 def test_constructor():

@@ -3,7 +3,7 @@ import pytest
 from numpy import testing as npt
 from numpy.testing import assert_allclose
 
-from _ngv_ctools.fast_marching_method import (
+from ngv_ctools._ngv_ctools.fast_marching_method import (
     dist_squared,
     dot,
     local_solver_2D,
