@@ -1,6 +1,43 @@
 [build-system]
-requires = ["setuptools>=42", "wheel", "pybind11~=2.12.0"]
-build-backend = "setuptools.build_meta"
+requires = [
+    "scikit-build-core>= 0.4.3",
+    "pybind11",
+]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "ngv-ctools"
+description="NGV Architecture c++ modules"
+readme = { file = "README.rst", content-type = "text/x-rst" }
+requires-python = ">=3.8"
+license = { file = "LICENSE.txt" }
+authors = [
+  {  name = "Blue Brain Project, EPFL" }
+]
+classifiers=[
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/BlueBrain/ngv-ctools"
+Repository = "https://github.com/BlueBrain/ngv-ctools"
+Issues = "https://github.com/BlueBrain/ngv-ctools/issues"
+Tracker = "https://github.com/BlueBrain/ngv-ctools/issues"
+
+[tool.setuptools.packages.find]
+where = ["src/ngv_ctools"]
+
+[tool.scikit-build]
+metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
 
 [tool.cibuildwheel]
 # Necessary to see build output from the actual compilation
@@ -11,6 +48,6 @@ test-command = "pytest {project}/tests"
 test-requires = ["pytest", "numpy"]
 
 # skip pypy and musllinux wheels
-skip = ["pp*", "*musllinux*"]
+skip = ["cp36-*", "cp37-*", "cp38-*", "pp*", "*musllinux*"]
 # Only target 64 bit architectures
 archs = ["auto64"]
