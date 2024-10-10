@@ -1,3 +1,4 @@
+#pragma once
 #include <cmath> // NAN
 #include <limits> // numeric_limits<T>::infinity
 
@@ -5,7 +6,7 @@
 #include <pybind11/numpy.h> // py::array_t
 
 #include "types.hpp" // Float
-#include "priority_heap.cpp" // MinPriorityHeap
+#include "priority_heap.hpp" // MinPriorityHeap
 
 
 namespace py = pybind11;

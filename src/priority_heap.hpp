@@ -1,3 +1,4 @@
+#pragma once
 #include <queue>     // priority_queue
 #include <vector>    // vector
 

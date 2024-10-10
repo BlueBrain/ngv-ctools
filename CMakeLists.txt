@@ -43,8 +43,8 @@ find_package(pybind11 CONFIG REQUIRED)
 
 pybind11_add_module(_ngv_ctools
     ${CMAKE_CURRENT_SOURCE_DIR}/src/types.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/priority_heap.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/fast_marching_method.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/priority_heap.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/fast_marching_method.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/bindings.cpp
 )
 
